@@ -15,6 +15,8 @@ impl<'ctx> Model<'ctx> {
             z3_mdl: unsafe {
                 let guard = Z3_MUTEX.lock().unwrap();
                 let m = Z3_solver_get_model(slv.ctx.z3_ctx, slv.z3_slv);
+                drop(guard);
+                assert!(!m.is_null());
                 Z3_model_inc_ref(slv.ctx.z3_ctx, m);
                 m
             },
@@ -27,6 +29,8 @@ impl<'ctx> Model<'ctx> {
             z3_mdl: unsafe {
                 let guard = Z3_MUTEX.lock().unwrap();
                 let m = Z3_optimize_get_model(opt.ctx.z3_ctx, opt.z3_opt);
+                drop(guard);
+                assert!(!m.is_null());
                 Z3_model_inc_ref(opt.ctx.z3_ctx, m);
                 m
             },
